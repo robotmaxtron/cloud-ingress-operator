@@ -41,7 +41,7 @@ spec:
       containers:
         - name: cloud-ingress-operator
           # Replace this with the built image name
-          image: quay.io/twilliams725/cloud-ingress-operator:latest
+          image: REPLACE_IMAGE
           command:
           - cloud-ingress-operator
           imagePullPolicy: Always
@@ -73,7 +73,7 @@ spec:
             readOnly: true
         - name: cio-admission
           # Replace this with the built image name
-          image: quay.io/twilliams725/cloud-ingress-operator:latest
+          image: REPLACE_IMAGE
           command:
           - cioadmission
           - "--secure-port=5000"

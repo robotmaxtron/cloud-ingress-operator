@@ -16,7 +16,7 @@ import (
 )
 
 // TODO REMOVE ME
-// Most of this is based on the examples in github.com/openshift/hive/pkg/validating-webhooks
+// Most of this is based on the examples in https://github.com/openshift/hive/tree/master/pkg/validating-webhooks/hive/v1
 
 const (
 	// TODO I have no idea what these values should actually be.

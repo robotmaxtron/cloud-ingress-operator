@@ -16,7 +16,7 @@ webhooks:
   rules:
   - operations:
     - DELETE
-    # NOTE some existing validatiors use "" as apigroup and * for versions, meaning it would affect all
+    # NOTE some existing validators use "" as apigroup and * for versions, meaning it would affect all
     #      we might consider doing that here to ensure new versions are covered?
     apiGroups:
     - managed.openshift.io
