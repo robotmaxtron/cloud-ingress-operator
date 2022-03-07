@@ -2,6 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: openshift-cloud-ingress-operator
-  name: trusted-ca-bundle
+  name: trusted-ca
   labels:
     config.openshift.io/inject-trusted-cabundle: "true"

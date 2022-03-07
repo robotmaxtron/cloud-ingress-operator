@@ -63,12 +63,12 @@ It is possible to add additional applicationIngresses, however at this time, OSD
 
 ## Testing
 
-### Manual testing of default and nondefault ingresscontroller
+### Manual testing of default and non-default ingresscontroller
 
 Due to a race condition with the [cluster-ingress-operator](https://github.com/openshift/cluster-ingress-operator) we test the logic flow of ingresscontroller manually. Once you are in a cluster, here are the steps to do so:
 
 - Pause syncset to the cluster [SOP](https://github.com/openshift/ops-sop/blob/master/v4/knowledge_base/pause-syncset.md)
-- Check the inital state of the ingresscontrollers on cluster before the test by running `oc get ingresscontrollers -n openshift-ingress-operator`
+- Check the initial state of the ingresscontrollers on cluster before the test by running `oc get ingresscontrollers -n openshift-ingress-operator`
   - In this test, we assume there is only one ingresscontroller called `default`.
 - Apply a sample `PublishingStrategy` CR with these specs
 
@@ -93,32 +93,34 @@ spec:
         labelSelector:
           matchLabels:
             foo: bar
+
 ```
+
 - Looking at `applicationIngress`, the expected result will be the creation of 2 ingresscontrollers, `default` and `apps2`. The `default` ingresscontroller will
 have all the attributes of the first `applicationIngress` replacing the old `default` ingresscontroller, and `apps2` will have the attributes of the second `applicationIngress`. To check these results, run `oc get ingresscontrollers -n openshift-ingress-operator` and view each `ingresscontroller` as yaml.
 - NOTE: it might take up to 60 seconds for these changes to apply due to a race condition.
 
-
-# Development
+## Development
 
 The operator is built with [operator-sdk](https://github.com/operator-framework/operator-sdk). There is a tight dependency on the AWS cluster provider but the dependency is pinned to the [OpenShift fork](https://github.com/openshift/cluster-api-provider-aws) for access to v1beta1 API features.
 
-## Debugging the operator
+### Debugging the operator
 
-You can quickly debug the operator on your existing OSD cluster by following the below steps. It is recommended to do this against a staging cluster. 
+You can quickly debug the operator on your existing OSD cluster by following the below steps. It is recommended to do this against a staging cluster.
 
 1. Connect to your cluster through backplane or directly
 
-2. Elevate your permissions: `oc adm groups add-users osd-sre-cluster-admins $(oc whoami)`
+1. Elevate your permissions: `oc adm groups add-users osd-sre-cluster-admins $(oc whoami)`
 
-3. Scale down `cluster-version-operator` and `cloud-ingress-operator`
+1. Scale down `cluster-version-operator` and `cloud-ingress-operator`
+
   ```bash
   oc scale --replicas 0 -n openshift-cluster-version deployments/cluster-version-operator
 
   oc scale --replicas 0 -n openshift-cloud-ingress-operator deployments cloud-ingress-operator
   ```
 
-4. Debug! If you are using VSCode, create/update your `launch.json` as followed
+1. Debug! If you are using VSCode, create/update your `launch.json` as followed
 
 ```json
 {
@@ -133,4 +135,4 @@ You can quickly debug the operator on your existing OSD cluster by following the
         }
     }]
 }
-``` 
+```

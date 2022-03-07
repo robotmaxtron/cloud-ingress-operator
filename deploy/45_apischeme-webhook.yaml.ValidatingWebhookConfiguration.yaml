@@ -5,17 +5,15 @@ kind: ValidatingWebhookConfiguration
 metadata:
   name: apischemevalidators.admission.managed.openshift.io
   annotations:
-    service.alpha.openshift.io/inject-cabundle: "true"
+    service.beta.openshift.io/inject-cabundle: "true"
 webhooks:
 - name: apischemevalidators.admission.managed.openshift.io
   admissionReviewVersions:
   - v1beta1
   clientConfig:
     service:
-      # reach the webhook via the registered aggregated API
       namespace: openshift-cloud-ingress-operator
       name: cloud-ingress-operator-webhook
-      # TODO I'm not sure if this is right
       path: /apis/admission.managed.openshift.io/v1/apischemevalidators
   rules:
   - operations:

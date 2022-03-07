@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"github.com/openshift/cloud-ingress-operator/pkg/apis/cloudingress/v1alpha1"
-
 	admissionv1beta1 "k8s.io/api/admission/v1beta1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -15,14 +14,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
-// TODO REMOVE ME
-// Most of this is based on the examples in https://github.com/openshift/hive/tree/master/pkg/validating-webhooks/hive/v1
-
 const (
-	// TODO I have no idea what these values should actually be.
 	apiSchemeAdmissionGroup   = "admission.managed.openshift.io"
 	apiSchemeAdmissionVersion = "v1"
-
 	protectedDeleteAnnotation = "managed.openshift.io/protected-delete"
 )
 
@@ -32,9 +26,6 @@ const (
 type APISchemeValidatingAdmissionHook struct {
 	decoder *admission.Decoder
 }
-
-// TODO make this work, not sure which package this is from?
-//var _ admission.ValidatingAdmissionHookV1Beta1 = APISchemeValidatingAdmissionHook{}
 
 func NewAPISchemeValidatingAdmissionHook(decoder *admission.Decoder) *APISchemeValidatingAdmissionHook {
 	return &APISchemeValidatingAdmissionHook{
@@ -72,7 +63,7 @@ func validateProtectedDelete(decoder *admission.Decoder, admissionSpec *admissio
 	// If running on OpenShift 3.11, OldObject will not be populated. All we can do is accept the DELETE request.
 	if len(admissionSpec.OldObject.Raw) == 0 {
 		// TODO Add logging like the below using whatever CIO usually uses
-		// logger.Info("Cannot validate the DELETE since OldObject is empty")
+		//Info("Cannot validate the DELETE since OldObject is empty")
 		return &admissionv1beta1.AdmissionResponse{
 			Allowed: true,
 		}

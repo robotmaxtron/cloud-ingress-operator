@@ -28,20 +28,23 @@ spec:
         key: node-role.kubernetes.io/infra
         effect: NoSchedule
       volumes:
-      - configMap:
+      - name: trusted-ca
+        configMap:
+          name: trusted-ca
           defaultMode: 420
           items:
             - key: ca-bundle.crt
               path: tls-ca-bundle.pem
-          name: trusted-ca-bundle
-        name: trusted-ca-bundle
       - name: webhook-certs
         secret:
           secretName: webhook-certs
       containers:
         - name: cloud-ingress-operator
-          # Replace this with the built image name
-          image: REPLACE_IMAGE
+          resources:
+          requests:cpu: "200m"
+          limits:memory: "1G"
+          #TODO Update image
+          image: quay.io/mwhittin/cloud-ingress-operator:1
           command:
           - cloud-ingress-operator
           imagePullPolicy: Always
@@ -55,11 +58,10 @@ spec:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: "cloud-ingress-operator"
-          resources:
-            requests:
-              cpu: "200m"
-            limits:
-              memory: "4G"
+          volumeMounts:
+            - name: trusted-ca
+              mountPath: /etc/pki/ca-trust/extracted/pem
+              readOnly: true
           livenessProbe:
             httpGet:
               path: /healthz
@@ -67,13 +69,12 @@ spec:
               port: 8000
             initialDelaySeconds: 45
             periodSeconds: 75
-          volumeMounts:
-          - mountPath: /etc/pki/ca-trust/extracted/pem
-            name: trusted-ca-bundle
-            readOnly: true
         - name: cio-admission
-          # Replace this with the built image name
-          image: REPLACE_IMAGE
+          resources:
+          requests:cpu: "200m"
+          limits:memory: "1G"
+          #TODO Update image
+          image: quay.io/mwhittin/cloud-ingress-operator:1
           command:
           - cioadmission
           - "--secure-port=5000"
@@ -84,11 +85,6 @@ spec:
           - containerPort: 5000
             protocol: TCP
           volumeMounts:
-          - mountPath: /var/webhook-certs
-            name: webhook-certs
-            readOnly: true
-          resources:
-            requests:
-              cpu: "200m"
-            limits:
-              memory: "1G"
+            - name: webhook-certs
+              mountPath: /var/webhook-certs
+              readOnly: true
