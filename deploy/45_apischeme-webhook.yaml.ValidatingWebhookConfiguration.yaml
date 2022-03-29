@@ -3,18 +3,18 @@
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: apischemevalidators.admission.managed.openshift.io
+  name: apischemevalidators.cloudingress.managed.openshift.io
   annotations:
     service.beta.openshift.io/inject-cabundle: "true"
 webhooks:
-- name: apischemevalidators.admission.managed.openshift.io
+- name: apischemevalidators.cloudingress.managed.openshift.io
   admissionReviewVersions:
   - v1beta1
   clientConfig:
     service:
       namespace: openshift-cloud-ingress-operator
       name: cloud-ingress-operator-webhook
-      path: /apis/admission.managed.openshift.io/v1/apischemevalidators
+      path: /apis/apiregistration.k8s.io/v1/apiservices/apischemevalidators.cloudingress.managed.openshift.io/
   rules:
   - operations:
     - DELETE

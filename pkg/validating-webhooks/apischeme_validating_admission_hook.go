@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	apiSchemeAdmissionGroup   = "admission.managed.openshift.io"
+	apiSchemeAdmissionGroup   = "admissionregistration.k8s.io"
 	apiSchemeAdmissionVersion = "v1"
 	protectedDeleteAnnotation = "managed.openshift.io/protected-delete"
 )

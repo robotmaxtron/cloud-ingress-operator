@@ -36,3 +36,9 @@ rules:
   - list
   - get
   - watch
+- apiGroups:
+  - admission.managed.openshift.io
+  resources:
+  - apischemevalidators
+  verbs:
+  - create

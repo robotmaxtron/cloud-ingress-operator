@@ -8,7 +8,6 @@ import (
 
 	"github.com/go-logr/logr"
 	operatorv1 "github.com/openshift/api/operator/v1"
-	"github.com/openshift/cloud-ingress-operator/pkg/apis/cloudingress/v1alpha1"
 	cloudingressv1alpha1 "github.com/openshift/cloud-ingress-operator/pkg/apis/cloudingress/v1alpha1"
 	"github.com/openshift/cloud-ingress-operator/pkg/cloudclient"
 	ctlutils "github.com/openshift/cloud-ingress-operator/pkg/controller/utils"
@@ -124,7 +123,7 @@ func (r *ReconcilePublishingStrategy) Reconcile(ctx context.Context, request rec
 	// In case of failure, clusterBaseDomain is an empty string.
 	clusterBaseDomain, _ := baseutils.GetClusterBaseDomain(r.client)
 
-	ownedIngressControllers := getIngressWithCloudIngressOpreatorOwnerAnnotation(*ingressControllerList)
+	ownedIngressControllers := getIngressWithCloudIngressOperatorOwnerAnnotation(*ingressControllerList)
 
 	/* To ensure that the set of all IngressControllers owned by cloud-ingress-operator
 	match the list of ApplicationIngresses in the PublishingStrategy, a map is created to
@@ -249,7 +248,7 @@ func getIngressName(dnsName string) string {
 }
 
 // Generates an IngressController CR object based on the configuration of an ApplicationIngress instance
-func generateIngressController(appIngress v1alpha1.ApplicationIngress) *operatorv1.IngressController {
+func generateIngressController(appIngress cloudingressv1alpha1.ApplicationIngress) *operatorv1.IngressController {
 	// Translate the ApplicationIngress listening string into the matching type for the IngressController
 	loadBalancerScope := operatorv1.LoadBalancerScope("")
 	switch appIngress.Listening {
@@ -413,7 +412,7 @@ func validatePatchableSpec(ingressController operatorv1.IngressController, desir
 }
 
 // Given an IngressControllerList, returns only IngressControllers with the cloud-ingress-operator Owner annotation
-func getIngressWithCloudIngressOpreatorOwnerAnnotation(ingressList operatorv1.IngressControllerList) *operatorv1.IngressControllerList {
+func getIngressWithCloudIngressOperatorOwnerAnnotation(ingressList operatorv1.IngressControllerList) *operatorv1.IngressControllerList {
 
 	ownedIngressList := &operatorv1.IngressControllerList{}
 
