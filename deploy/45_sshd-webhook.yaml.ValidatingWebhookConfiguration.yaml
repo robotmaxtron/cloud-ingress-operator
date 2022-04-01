@@ -8,7 +8,7 @@ metadata:
 webhooks:
 - name: sshdvalidators.cloudingress.managed.openshift.io
   admissionReviewVersions:
-  - v1beta1
+  - v1
   clientConfig:
     service:
       namespace: openshift-cloud-ingress-operator
@@ -17,13 +17,12 @@ webhooks:
   rules:
   - operations:
     - DELETE
-    # NOTE some existing validators use "" as apigroup and * for versions, meaning it would affect all
-    #      we might consider doing that here to ensure new versions are covered?
     apiGroups:
     - cloudingress.managed.openshift.io
     apiVersions:
-    - v1
+    - v1alpha1
     resources:
     - sshds
+    scope: "Namespaced"
   failurePolicy: Fail
   sideEffects: None
